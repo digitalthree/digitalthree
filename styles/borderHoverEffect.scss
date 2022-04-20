@@ -1,0 +1,49 @@
+@mixin magic-border-mask($width, $duration, $background, $direction){
+  position:relative;
+  &:before{
+    content:'';
+    position:absolute;
+    border-radius: 0.5rem;
+    width:calc(100% + #{$width * 2});
+    height:calc(100% + #{$width * 2});
+    top:calc(#{$width}/-1);
+    left:calc(#{$width}/-1);
+    mask:linear-gradient(to right, #000 0%, #000 100%), linear-gradient(to top, #000 50%, transparent 50%), linear-gradient(to top, #000 50%, transparent 50%), linear-gradient(to right, #000 0%, #000 100%), linear-gradient(to left, #000 0%, #000 100%);
+    mask-size:100% $width, $width 200%, $width 200%, 0% $width, 0% $width;
+    mask-position:50% 100%, 0% 0%, 100% 0%, 100% 0%, 0% 0%;
+    mask-repeat:no-repeat, no-repeat;
+    transition:transform $duration ease-in-out, mask-position $duration ease-in-out, mask-size $duration ease-in-out;
+    transform:scaleX(0) rotate(180deg * $direction);
+    transition-delay:$duration*2, $duration, 0s;
+    background:$background;
+  }
+  &:hover{
+    &:before{
+      mask-size:200% $width, $width 400%, $width 400%, 55% $width, 55% $width;
+      mask-position:50% 100%, 0% 100%, 100% 100%, 100% 0%, 0% 0%;
+      transform:scaleX(1) rotate(180deg * $direction);
+      transition-delay:0s, $duration, $duration*2;
+    }
+  }
+}
+
+#cardPortfolio{
+  text-decoration:none;
+  color:#222;
+  padding:20px;
+  background:#efefef;
+  text-transform:uppercase;
+  text-align:center;
+  @include magic-border-mask(5px, 0.3s, linear-gradient(to top,  #DFAC2A, #6846FC, #4695FE), 0);
+  margin:20px;
+  flex-grow:1;
+  cursor:pointer;
+  transform: scale(1);
+  transition: .7s linear;
+}
+
+#cardPortfolio:hover{
+  transform: scale(1.05);
+  filter: saturate(1.5);
+  transition: .7s linear;
+}
